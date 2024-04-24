@@ -57,7 +57,7 @@ runtime {
                 '--copyright', company,
         ]
         if(os.macOsX) {
-            imageOptions = ['--mac-sign']
+            // imageOptions = ['--mac-sign']
             installerOptions += [
                 // '--mac-sign',
                 // '--mac-signing-key-user-name', System.getenv('SIGNING_KEY_USER_NAME'),
