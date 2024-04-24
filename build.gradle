@@ -11,6 +11,8 @@ plugins {
 
 dependencies {
     // AAS4J
+    implementation('org.eclipse.digitaltwin.aas4j:aas4j-model:1.0.2')
+    implementation('org.eclipse.digitaltwin.aas4j:aas4j-dataformat-xml:1.0.2')
 
     // test dependencies
     testImplementation('org.junit.jupiter:junit-jupiter:5.10.2')
