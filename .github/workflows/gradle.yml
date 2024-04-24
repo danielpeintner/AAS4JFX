@@ -2,14 +2,6 @@ name: Gradle Build
 
 # on: [push, pull_request]
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the non-modular branch
-  push:
-    branches:
-      - non-modular
-  pull_request:
-    branches:
-      - non-modular
   workflow_dispatch:
     # manuel trigger
 jobs:
