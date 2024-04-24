@@ -1,0 +1,69 @@
+name: Gradle Build
+
+# on: [push, pull_request]
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the non-modular branch
+  push:
+    branches:
+      - non-modular
+  pull_request:
+    branches:
+      - non-modular
+  workflow_dispatch:
+    # manuel trigger
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        java: [ '17' ]
+      fail-fast: false
+    name: ${{ matrix.os }}
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java }}
+    - name: Echo JAVA_HOME
+      run: echo $JAVA_HOME
+    - name: Verify Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
+    - name: Execute build
+      run: ./gradlew --info --stacktrace build
+    - name: Execute runtime
+      run: ./gradlew --info --stacktrace runtime
+    - name: Execute jpackage
+      run: ./gradlew --info --stacktrace jpackage
+    - name: Upload DMG as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: hello-fx-jdk${{ matrix.java }}-${{ matrix.os }}-dmg
+        path: build/jpackage/*.dmg
+    - name: Upload EXE as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: hello-fx-jdk${{ matrix.java }}-${{ matrix.os }}-exe
+        path: build/jpackage/*.exe
+        retention-days: 30
+    - name: Upload MSI as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: hello-fx-jdk${{ matrix.java }}-${{ matrix.os }}-msi
+        path: build/jpackage/*.msi
+        retention-days: 30
+    - name: Upload DEB as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: hello-fx-jdk${{ matrix.java }}-${{ matrix.os }}-deb
+        path: build/jpackage/*.deb
+        retention-days: 30
+    - name: Upload RPM as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: hello-fx-jdk${{ matrix.java }}-${{ matrix.os }}-rpm
+        path: build/jpackage/*.rpm
+        retention-days: 30
