@@ -27,10 +27,10 @@ public class FileSelector extends HBox {
     Window owner;
 
     public FileSelector() {
-        this(null);
+        this(null, null);
     }
 
-    public FileSelector(File initialFile) {
+    public FileSelector(File initialFile, FileChooser.ExtensionFilter def) {
         this.initialFile = initialFile;
 
         tf = new TextField();
@@ -83,7 +83,7 @@ public class FileSelector extends HBox {
         buttonSelect.setGraphic(new FontAwesome().create(FontAwesome.Glyph.FOLDER_OPEN));
         buttonSelect.setOnAction(e -> {
             try {
-                selected = getFileChooserXML(initialFile).showOpenDialog(owner);
+                selected = getFileChooserXML(initialFile, def).showOpenDialog(owner);
 
                 if (selected != null) {
                     setInitialDirectory(selected);
@@ -116,14 +116,20 @@ public class FileSelector extends HBox {
     }
 
     public static final String FILE_EXTENSION_XML = ".xml";
+    public static final String FILE_EXTENSION_JSON = ".json";
     public static final String FILE_EXTENSION_ALL = ".*";
 
-    static final FileChooser.ExtensionFilter extFilterXML = new FileChooser.ExtensionFilter("XML", "*" + FILE_EXTENSION_XML);
-    static final FileChooser.ExtensionFilter extFilterAll = new FileChooser.ExtensionFilter("All", "*" + FILE_EXTENSION_ALL);
+    public static final FileChooser.ExtensionFilter extFilterXML = new FileChooser.ExtensionFilter("XML", "*" + FILE_EXTENSION_XML);
+    public static final FileChooser.ExtensionFilter extFilterJSON = new FileChooser.ExtensionFilter("JSON", "*" + FILE_EXTENSION_JSON);
+    public static final FileChooser.ExtensionFilter extFilterAll = new FileChooser.ExtensionFilter("All", "*" + FILE_EXTENSION_ALL);
 
-    public FileChooser getFileChooserXML(File fileProj) {
+    public FileChooser getFileChooserXML(File fileProj, FileChooser.ExtensionFilter def) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(extFilterXML);
+        // fileChooser.getExtensionFilters().add(extFilterXML);
+        // fileChooser.getExtensionFilters().add(extFilterJSON);
+        if (def != null) {
+            fileChooser.getExtensionFilters().add(def);
+        }
         fileChooser.getExtensionFilters().add(extFilterAll);
 
         fileChooser.setInitialDirectory(initialDirectory);
